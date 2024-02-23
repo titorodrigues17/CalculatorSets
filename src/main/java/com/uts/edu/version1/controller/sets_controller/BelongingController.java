@@ -1,4 +1,4 @@
-package com.uts.edu.version1.controller;
+package com.uts.edu.version1.controller.sets_controller;
 
 import com.uts.edu.version1.entity.Sets;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -6,15 +6,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/sets")
-public class AbsoluteDifferenceController {
-    @PostMapping("/absolute-difference")
-    public String calculateAbsoluteDifference(@RequestBody Sets sets) {
-        // Calcular la diferencia absoluta entre los conjuntos A y B
-        String[] differenceArray = calculateAbsoluteDifference(sets.getA(), sets.getB());
+public class BelongingController {
+
+
+    @PostMapping("/pertinence")
+    public String checkPertinence(@RequestBody Sets sets) {
+        // Verificar si todos los elementos de B están contenidos en A
+        boolean isPertinent = checkPertinence(sets.getA(), sets.getB());
 
         // Construir el mensaje de respuesta
         StringBuilder result = new StringBuilder();
@@ -26,26 +30,26 @@ public class AbsoluteDifferenceController {
         appendArray(result, sets.getB());
         result.append("\n");
 
-        result.append("Diferencia absoluta de A con respecto a B: ");
-        appendArray(result, differenceArray);
+        if (isPertinent) {
+            result.append("El conjunto B está contenido en el conjunto A");
+        } else {
+            result.append("El conjunto B NO está contenido en el conjunto A");
+        }
 
         return result.toString();
     }
 
-    // Método para calcular la diferencia absoluta entre dos arrays de cadenas
-    private String[] calculateAbsoluteDifference(String[] a, String[] b) {
-        Set<String> setB = new HashSet<>(Arrays.asList(b));
+    // Método para verificar si todos los elementos de B están contenidos en A
+    private boolean checkPertinence(String[] a, String[] b) {
+        Set<String> setA = new HashSet<>(Arrays.asList(a));
 
-        // Calcular los elementos que están en A pero no en B
-        List<String> differenceList = new ArrayList<>();
-        for (String element : a) {
-            if (!setB.contains(element)) {
-                differenceList.add(element);
+        // Verificar si todos los elementos de B están contenidos en A
+        for (String element : b) {
+            if (!setA.contains(element)) {
+                return false;
             }
         }
-
-        // Convertir la lista de diferencia a un array
-        return differenceList.toArray(new String[0]);
+        return true;
     }
 
     // Método para agregar un array a un StringBuilder

@@ -1,4 +1,4 @@
-package com.uts.edu.version1.controller;
+package com.uts.edu.version1.controller.sets_controller;
 
 import com.uts.edu.version1.entity.Sets;
 import org.springframework.web.bind.annotation.PostMapping;
